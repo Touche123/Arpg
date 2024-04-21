@@ -85,10 +85,12 @@ namespace Arpg
 
 		public void Draw(SpriteBatch spriteBatch)
 		{
+			spriteBatch.Begin();
 			for (int i = 0; i < _items.Length; i++)
 			{
 				_items[i].Draw(spriteBatch, _font);
 			}
+			spriteBatch.End();
 		}
 	}
 }

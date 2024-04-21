@@ -42,17 +42,16 @@ namespace Arpg
 
 	public class Game1 : Game
 	{
-		Texture2D playerTexture;
-		private GraphicsDeviceManager _graphics;
+		public GraphicsDeviceManager Graphics { get; set; }
 		private SpriteBatch _spriteBatch;
 		private SpriteFont _font;
 		private MainMenu _mainMenu;
 		private Gameplay _gameplay;
-		
+
 		private GameState _gameState;
 		public Game1()
 		{
-			_graphics = new GraphicsDeviceManager(this);
+			Graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
 
@@ -70,11 +69,11 @@ namespace Arpg
 		{
 			_spriteBatch = new SpriteBatch(GraphicsDevice);
 			_font = Content.Load<SpriteFont>("Font");
-			playerTexture = Content.Load<Texture2D>("player");
 
 			string[] menuItems = { "Start Game", "Options", "Exit" };
-			_mainMenu = new MainMenu(menuItems, _font, _graphics);
-			_gameplay = new Gameplay();
+			_mainMenu = new MainMenu(menuItems, _font, Graphics);
+			_gameplay = new Gameplay(Graphics);
+			_gameplay.Loadcontent(Content);
 		}
 
 		protected override void Update(GameTime gameTime)
@@ -95,7 +94,6 @@ namespace Arpg
 				Exit();
 
 			_gameState.LateUpdate();
-			// TODO: Add your update logic here
 
 			base.Update(gameTime);
 		}
@@ -104,8 +102,6 @@ namespace Arpg
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
-			_spriteBatch.Begin();
-
 			switch (_gameState.CurrentScene)
 			{
 				case SceneType.MainMenu:
@@ -113,12 +109,8 @@ namespace Arpg
 					break;
 				case SceneType.Gameplay:
 					_gameplay.Draw(_spriteBatch);
-					_spriteBatch.Draw(playerTexture, new Vector2(0, 0), Color.White);
 					break;
 			}
-			_spriteBatch.End();
-
-			// TODO: Add your drawing code here
 
 			base.Draw(gameTime);
 		}
