@@ -60,7 +60,7 @@ namespace Arpg
 		{
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || gameState.CurrentKeyboardState.IsKeyDown(Keys.Escape) && !gameState.PreviousKeyboardState.IsKeyDown(Keys.Escape))
 			{
-				ShouldStartGame = true;
+				gameState.CurrentScene = SceneType.Gameplay;
 				return;
 			}
 
@@ -72,10 +72,10 @@ namespace Arpg
 					_selectedIndex = i;
 
 					if (_selectedIndex == 0)
-						ShouldStartGame = true;
+						gameState.CurrentScene = SceneType.Gameplay;
 
 					if (_selectedIndex == 2)
-					ShouldExit = true;
+						ShouldExit = true;
 
 					Debug.WriteLine("Selected: " + _items[_selectedIndex].Text);
 					//Console.WriteLine("Selected: " + _items[_selectedIndex].Text);

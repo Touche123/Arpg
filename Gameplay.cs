@@ -11,12 +11,11 @@ namespace Arpg
 {
 	internal class Gameplay
 	{
-		public bool ShouldPause { get; set; }
 		public void Update(GameState gameState)
 		{
 			if (gameState.CurrentKeyboardState.IsKeyDown(Keys.Escape) && !gameState.PreviousKeyboardState.IsKeyDown(Keys.Escape))
 			{
-				ShouldPause = true;
+				gameState.CurrentScene = SceneType.MainMenu;
 			}
 		}
 

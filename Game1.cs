@@ -19,6 +19,12 @@ namespace Arpg
 		public MouseState CurrentMouseState { get; set; }
 		public MouseState PreviousMouseState { get; set; }
 		public GameTime CurrentGametime { get; set; }
+		public SceneType CurrentScene { get; set; }
+
+		public GameState()
+		{
+			CurrentScene = SceneType.MainMenu;
+		}
 
 		public void EarlyUpdate(GameTime gameTime, KeyboardState keyboardState, MouseState mouseState)
 		{
@@ -42,7 +48,7 @@ namespace Arpg
 		private SpriteFont _font;
 		private MainMenu _mainMenu;
 		private Gameplay _gameplay;
-		private SceneType _currentScene;
+		
 		private GameState _gameState;
 		public Game1()
 		{
@@ -51,7 +57,6 @@ namespace Arpg
 			IsMouseVisible = true;
 
 			_gameState = new GameState();
-			_currentScene = SceneType.MainMenu;
 		}
 
 		protected override void Initialize()
@@ -76,7 +81,7 @@ namespace Arpg
 		{
 			_gameState.EarlyUpdate(gameTime, Keyboard.GetState(), Mouse.GetState());
 
-			switch (_currentScene)
+			switch (_gameState.CurrentScene)
 			{
 				case SceneType.MainMenu:
 					_mainMenu.Update(_gameState);
@@ -84,17 +89,6 @@ namespace Arpg
 				case SceneType.Gameplay:
 					_gameplay.Update(_gameState);
 					break;
-			}
-
-			if (_currentScene == SceneType.MainMenu && _mainMenu.ShouldStartGame)
-			{
-				_mainMenu.ShouldStartGame = false;
-				_currentScene = SceneType.Gameplay;
-			}
-			else if (_currentScene == SceneType.Gameplay && _gameplay.ShouldPause)
-			{
-				_gameplay.ShouldPause = false;
-				_currentScene = SceneType.MainMenu;
 			}
 
 			if (_mainMenu.ShouldExit)
@@ -112,7 +106,7 @@ namespace Arpg
 
 			_spriteBatch.Begin();
 
-			switch (_currentScene)
+			switch (_gameState.CurrentScene)
 			{
 				case SceneType.MainMenu:
 					_mainMenu.Draw(_spriteBatch);
