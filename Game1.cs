@@ -20,17 +20,22 @@ namespace Arpg
 		public MouseState PreviousMouseState { get; set; }
 		public GameTime CurrentGametime { get; set; }
 		public SceneType CurrentScene { get; set; }
+		public int ScreenWidth { get; set; }
+		public int ScreenHeight { get; set; }
 
 		public GameState()
 		{
 			CurrentScene = SceneType.MainMenu;
 		}
 
-		public void EarlyUpdate(GameTime gameTime, KeyboardState keyboardState, MouseState mouseState)
+		public void EarlyUpdate(GraphicsDeviceManager graphics, GameTime gameTime, KeyboardState keyboardState, MouseState mouseState)
 		{
 			CurrentGametime = gameTime;
 			CurrentKeyboardState = keyboardState;
 			CurrentMouseState = mouseState;
+
+			ScreenWidth = graphics.PreferredBackBufferWidth;
+			ScreenHeight = graphics.PreferredBackBufferHeight;
 		}
 
 		public void LateUpdate()
@@ -78,7 +83,7 @@ namespace Arpg
 
 		protected override void Update(GameTime gameTime)
 		{
-			_gameState.EarlyUpdate(gameTime, Keyboard.GetState(), Mouse.GetState());
+			_gameState.EarlyUpdate(Graphics, gameTime, Keyboard.GetState(), Mouse.GetState());
 
 			switch (_gameState.CurrentScene)
 			{
