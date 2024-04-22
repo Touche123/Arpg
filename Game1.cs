@@ -57,6 +57,13 @@ namespace Arpg
 		public Game1()
 		{
 			Graphics = new GraphicsDeviceManager(this);
+			Graphics.PreferredBackBufferWidth = 1920;
+			Graphics.PreferredBackBufferHeight = 1080;
+			Graphics.HardwareModeSwitch = false;
+			Graphics.PreferMultiSampling = true;
+			Graphics.IsFullScreen = true;
+			Graphics.ApplyChanges();
+
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
 

@@ -25,7 +25,14 @@
 /processorParam:TextureFormat=Color
 /build:bg.jpg
 
-#begin C:/Users/jonas/OneDrive/Skrivbord/inventory.png
+#begin Font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font.spritefont
+
+#begin inventory.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,14 +42,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:C:/Users/jonas/OneDrive/Skrivbord/inventory.png;inventory.png
-
-#begin Font.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Font.spritefont
+/build:inventory.png
 
 #begin player.png
 /importer:TextureImporter
