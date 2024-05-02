@@ -19,11 +19,18 @@ namespace Arpg
 		private Texture2D _inventoryTexture;
 		private bool _showInventory;
 		private GameState _gameState;
-
-		public Gameplay(GraphicsDeviceManager graphics)
+		private Vector2 _inventoryPosition;
+		private GraphicsDeviceManager _graphicsDeviceManager;
+		private GraphicsDevice _graphicsDevice;
+		public Gameplay(GraphicsDeviceManager graphicsDeviceManager, GraphicsDevice graphicsDevice)
 		{
+			_graphicsDeviceManager = graphicsDeviceManager;
+			_graphicsDevice = graphicsDevice;
+
 			_player = new Player();
-			_camera = new Camera(graphics);
+			_camera = new Camera(_graphicsDeviceManager);
+			_inventoryPosition = new Vector2(0, 0);
+			
 		}
 
 		public void Loadcontent(ContentManager content)
@@ -42,7 +49,8 @@ namespace Arpg
 
 			Vector2 movement = Vector2.Zero;
 
-			if (_gameState.CurrentKeyboardState.IsKeyDown(Keys.W)) {
+			if (_gameState.CurrentKeyboardState.IsKeyDown(Keys.W))
+			{
 				movement.Y -= 1;
 			}
 			if (_gameState.CurrentKeyboardState.IsKeyDown(Keys.S))
@@ -70,10 +78,10 @@ namespace Arpg
 			_camera.Position += movement * _player.Speed;
 			_camera.Update(_gameState.CurrentGametime);
 
-			
+
 		}
 
-		public void Draw(SpriteBatch spriteBatch) 
+		public void Draw(SpriteBatch spriteBatch, UIManager uIManager)
 		{
 			spriteBatch.Begin(transformMatrix: _camera.GetViewMatrix());
 			spriteBatch.Draw(_bgTexture, new Vector2(0.0f, 0.0f), Color.White);
@@ -82,15 +90,22 @@ namespace Arpg
 
 			if (_showInventory)
 			{
-				InventoryDraw(spriteBatch);
+				InventoryDraw(spriteBatch, uIManager);
 			}
 		}
 
-		public void InventoryDraw(SpriteBatch spriteBatch)
+		public void InventoryDraw(SpriteBatch spriteBatch, UIManager uIManager)
 		{
-			spriteBatch.Begin();
-			
-			spriteBatch.Draw(_inventoryTexture, new Rectangle(_gameState.ScreenWidth - (int)((float)_gameState.ScreenWidth * 0.3f), 0, (int)((float)_gameState.ScreenWidth * 0.3f), _gameState.ScreenHeight), Color.White);
+			//spriteBatch.Draw(_inventoryTexture, uIManager.ScaleVector(_inventoryPosition), Color.White);
+			// Calculate the width to maintain aspect ratio and fill the whole height
+			spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, uIManager.GetScaleMatrix());
+
+			// Calculate the width to maintain aspect ratio and fill the whole height
+			float aspectRatio = (float)_inventoryTexture.Width / _inventoryTexture.Height;
+			int textureWidth = (int)(_graphicsDevice.Viewport.Height * aspectRatio);
+
+			// Draw the texture at the top-left corner of the screen with calculated width
+			spriteBatch.Draw(_inventoryTexture, new Rectangle(0, 0, textureWidth, _graphicsDevice.Viewport.Height), Color.White);
 			spriteBatch.End();
 		}
 
